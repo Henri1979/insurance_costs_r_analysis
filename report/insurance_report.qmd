@@ -2,4 +2,144 @@
 title: "Insurance Cost Analysis"
 author: "Henri Hörkkö"
 format: pdf
+execute:
+  echo: false
+  message: false
+  warning: false
 ---
+
+```{r setup, include=FALSE}
+library(tidyverse)
+library(knitr)
+library(broom)
+
+setwd("..")
+
+source("scripts/02_data_cleaning.R")
+source("scripts/04_regression_models.R")
+```
+
+# 1. Syfte
+
+Syftet med denna analys är att undersöka vilka faktorer som påverkar försäkringskostnader (`charges`) och att bygga regressionsmodeller i R.
+
+# 2. Dataförståelse
+
+Datasetet innehåller kundinformation som ålder, kön, region, BMI, antal barn, rökstatus, kronisk sjukdom, årliga hälsokontroller och försäkringskostnader.
+
+```{r}
+insurance_clean %>%
+  summarise(
+    Antal_rader = n(),
+    Antal_variabler = ncol(insurance_clean),
+    Saknade_varden = sum(is.na(insurance_clean))
+  ) %>%
+  kable(caption = "Översikt av datasetet")
+```
+
+# 3. Datastädning och förberedelse
+
+I datastädningen kontrollerades saknade värden. Saknade värden i `annual_checkups` ersattes med median. Textvariabler konverterades till kategoriska variabler och inkonsekventa värden i `smoker` rättades. Nya variabler skapades också: `bmi_category` och `age_group`.
+
+# 4. Beskrivande analys
+
+```{r, fig.width=6, fig.height=4}
+ggplot(insurance_clean, aes(x = charges)) +
+  geom_histogram(bins = 30, fill = "skyblue", color = "white") +
+  labs(
+    title = "Fördelning av försäkringskostnader",
+    x = "Charges",
+    y = "Antal kunder"
+  ) +
+  theme_minimal()
+```
+
+```{r, fig.width=6, fig.height=4}
+ggplot(insurance_clean, aes(x = smoker, y = charges)) +
+  geom_boxplot(aes(fill = smoker)) +
+  labs(
+    title = "Försäkringskostnad efter rökstatus",
+    x = "Rökare",
+    y = "Charges"
+  ) +
+  theme_minimal()
+```
+
+```{r, fig.width=6, fig.height=4}
+ggplot(insurance_clean, aes(x = age, y = charges)) +
+  geom_point(aes(color = smoker), alpha = 0.6) +
+  labs(
+    title = "Samband mellan ålder och försäkringskostnad",
+    x = "Ålder",
+    y = "Charges"
+  ) +
+  theme_minimal()
+```
+
+```{r, fig.width=6, fig.height=4}
+insurance_clean %>%
+  filter(bmi_category != "Unknown") %>%
+  ggplot(aes(x = bmi_category, y = charges)) +
+  geom_boxplot(aes(fill = bmi_category)) +
+  labs(
+    title = "Försäkringskostnad per BMI-kategori",
+    x = "BMI-kategori",
+    y = "Charges"
+  ) +
+  theme_minimal()
+```
+
+```{r}
+insurance_clean %>%
+  group_by(smoker) %>%
+  summarise(
+    Genomsnitt = round(mean(charges), 2),
+    Median = round(median(charges), 2),
+    Antal = n()
+  ) %>%
+  kable(caption = "Försäkringskostnader per rökstatus")
+```
+
+Den beskrivande analysen visar att rökare generellt har högre försäkringskostnader än icke-rökare. Diagrammen visar också att ålder och BMI verkar ha samband med kostnaderna.
+
+# 5. Regressionsanalys
+
+Två regressionsmodeller skapades. Modell 1 innehåller `age`, `bmi` och `smoker`. Modell 2 innehåller även `children`, `annual_checkups` och `chronic_condition`.
+
+```{r}
+tidy(model_2) %>%
+  mutate(
+    estimate = round(estimate, 2),
+    std.error = round(std.error, 2),
+    statistic = round(statistic, 2),
+    p.value = round(p.value, 4)
+  ) %>%
+  kable(caption = "Resultat från regressionsmodell 2")
+```
+
+Resultatet visar att `age`, `bmi`, `smoker` och `chronic_condition` är de tydligaste faktorerna i modellen. Rökning har särskilt stor påverkan på försäkringskostnaden.
+
+# 6. Modelljämförelse
+
+```{r}
+data.frame(
+  Modell = c("Modell 1", "Modell 2"),
+  R_squared = round(c(summary(model_1)$r.squared, summary(model_2)$r.squared), 3),
+  Adjusted_R_squared = round(c(summary(model_1)$adj.r.squared, summary(model_2)$adj.r.squared), 3)
+) %>%
+  kable(caption = "Jämförelse mellan modeller")
+```
+
+Modell 2 hade högre R-squared och adjusted R-squared än modell 1. Därför förklarar modell 2 mer av variationen i försäkringskostnaderna.
+
+# 7. Begränsningar
+
+Analysen innehåller inte alla faktorer som kan påverka försäkringskostnader. Exempel på saknade faktorer är inkomst, yrke, genetik och mer detaljerad medicinsk historik. Modellen visar samband, men den kan inte bevisa orsakssamband.
+
+# 8. Slutsats
+
+De tydligaste faktorerna för högre försäkringskostnader var rökning, kronisk sjukdom, BMI och ålder. Modell 2 presterade bäst eftersom den förklarade mer av variationen i datan.
+
+# 9. Självreflektion
+
+Den svåraste delen var datastädning och att jämföra regressionsmodeller. Genom projektet lärde jag mig att strukturera ett R-projekt, analysera data, skapa visualiseringar och bygga regressionsmodeller.

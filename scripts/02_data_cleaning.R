@@ -26,7 +26,8 @@ insurance_clean <- insurance_clean %>%
       bmi < 18.5 ~ "Underweight",
       bmi >= 18.5 & bmi < 25 ~ "Normal",
       bmi >= 25 & bmi < 30 ~ "Overweight",
-      bmi >= 30 ~ "Obese"
+      bmi >= 30 ~ "Obese",
+      TRUE ~ "Unknown"
     ),
     age_group = case_when(
       age < 30 ~ "Under 30",
