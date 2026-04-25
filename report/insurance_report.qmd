@@ -140,6 +140,14 @@ Analysen innehåller inte alla faktorer som kan påverka försäkringskostnader.
 
 De tydligaste faktorerna för högre försäkringskostnader var rökning, kronisk sjukdom, BMI och ålder. Modell 2 presterade bäst eftersom den förklarade mer av variationen i datan.
 
-# 9. Självreflektion
+# 9. Motivering till VG
+
+Jag anser att projektet uppfyller VG-kriterierna eftersom analysen inte bara innehåller dataförståelse och beskrivande statistik, utan också datastädning, skapande av nya variabler och jämförelse mellan två regressionsmodeller.
+
+Projektet innehåller flera relevanta visualiseringar, en tydlig regressionsanalys och en modelljämförelse med R-squared och adjusted R-squared. Modell 2 valdes som bättre modell eftersom den förklarade mer av variationen i försäkringskostnaderna än Modell 1.
+
+Jag har också tolkat resultaten och diskuterat begränsningar, till exempel att modellen visar samband men inte kan bevisa orsakssamband.
+
+# 10. Självreflektion
 
 Den svåraste delen var datastädning och att jämföra regressionsmodeller. Genom projektet lärde jag mig att strukturera ett R-projekt, analysera data, skapa visualiseringar och bygga regressionsmodeller.
