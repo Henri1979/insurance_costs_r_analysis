@@ -13,6 +13,8 @@ ggplot(insurance_clean, aes(x = charges)) +
     y = "Number of customers"
   )
 
+ggsave("figures/charges_distribution.png")
+
 
 # Figur 2: Kostnader för rökare och icke-rökare
 ggplot(insurance_clean, aes(x = smoker, y = charges)) +
@@ -22,6 +24,7 @@ ggplot(insurance_clean, aes(x = smoker, y = charges)) +
     x = "Smoker",
     y = "Charges"
   )
+ggsave("figures/charges_by_smoker.png")
 
 
 # Figur 3: Samband mellan ålder och kostnader
@@ -32,7 +35,7 @@ ggplot(insurance_clean, aes(x = age, y = charges)) +
     x = "Age",
     y = "Charges"
   )
-
+ggsave("figures/charges_by_age.png")
 
 # Figur 4: Kostnader per BMI-kategori
 ggplot(insurance_clean, aes(x = bmi_category, y = charges)) +
@@ -42,7 +45,7 @@ ggplot(insurance_clean, aes(x = bmi_category, y = charges)) +
     x = "BMI category",
     y = "Charges"
   )
-
+ggsave("figures/charges_by_bmi_category.png")
 
 # Tabell: Genomsnittlig kostnad per rökstatus
 insurance_clean %>%
