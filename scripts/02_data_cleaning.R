@@ -16,7 +16,7 @@ insurance_clean <- insurance %>%
   mutate(
     sex = as.factor(sex),
     region = as.factor(region),
-    smoker = as.factor(smoker)
+    smoker = as.factor(ifelse(str_to_lower(smoker) == "yes", "yes", "no"))
   )
 
 # Skapar nya variabler för analysen
