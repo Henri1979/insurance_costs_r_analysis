@@ -134,7 +134,7 @@ Modell 2 hade högre R-squared och adjusted R-squared än modell 1. Därför fö
 
 # 7. Begränsningar
 
-Analysen innehåller inte alla faktorer som kan påverka försäkringskostnader. Exempel på saknade faktorer är inkomst, yrke, genetik och mer detaljerad medicinsk historik. Modellen visar samband, men den kan inte bevisa orsakssamband.
+Analysen innehåller inte alla faktorer som kan påverka försäkringskostnader. Exempel på saknade faktorer är inkomst, yrke, genetik och mer detaljerad medicinsk historik. Modellen visar samband, men den kan inte bevisa orsakssamband. Analysen skulle kunna förbättras genom att inkludera fler relevanta variabler, testa fler modeller och använda fler utvärderingsmått för att jämföra modellerna.
 
 # 8. Slutsats
 
